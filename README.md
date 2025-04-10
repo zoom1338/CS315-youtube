@@ -19,3 +19,8 @@ source venv/bin/activate
 ```
 pip install -r requirements.txt
 ```
+
+4. Run it
+```
+python3 clean_us_data.py
+```
