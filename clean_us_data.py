@@ -137,5 +137,5 @@ print("\nExample AFTER cleaning:\n", sample_after)
 
 print("-------------------------------------------------------------------")
 # done :)
-df_us_comments.to_csv("data/UScomments_clean.csv", index=False)
-df_us_videos.to_csv("data/USvideos_clean.csv", index=False)
+#df_us_comments.to_csv("data/UScomments_clean.csv", index=False)
+#df_us_videos.to_csv("data/USvideos_clean.csv", index=False)
