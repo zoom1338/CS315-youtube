@@ -98,3 +98,48 @@ plot_category_distribution(us_category_counts, "Trending Videos by Category (US)
 plot_category_distribution(gb_category_counts, "Trending Videos by Category (GB)", "gb_category_distribution_named.png")
 
 gb_category_counts, us_category_counts
+
+# let's investigate if some categories get more views, likes, and comments. Let's also plot average view per category
+# and average likes per category
+# function to plot bar chart of average metric per category
+def plot_avg_metric_by_category(df_us, df_gb, metric, title, filename):
+    avg_us = df_us.groupby("category_name")[metric].mean().sort_values(ascending=False)
+
+    # keep the same order as US categories
+    avg_gb = df_gb.groupby("category_name")[metric].mean().reindex(avg_us.index)
+
+    plt.figure(figsize=(12, 6))
+
+    # create an array of evenly spaced values, one for each category
+    x = np.arange(len(avg_us))
+    plt.bar(x - 0.40/2, avg_us, 0.40, label="US", color="blue", zorder=3)
+    plt.bar(x + 0.40/2, avg_gb, 0.40, label="GB", color="red", zorder=3)
+
+    plt.xticks(x, avg_us.index, rotation=45, ha="right")
+    plt.ylabel(f"Average {metric.capitalize()}")
+    plt.xlabel("Category")
+    plt.title(title)
+    plt.legend(title="Region")
+
+    #https://www.w3schools.com/python/matplotlib_grid.asp
+    plt.grid(axis='y', linestyle="--", linewidth=0.5, zorder=0)
+
+    plt.tight_layout()
+    plt.savefig(f"figures/{filename}", dpi=300)
+    plt.close()
+
+plot_avg_metric_by_category(
+    df_us_videos,
+    df_gb_videos,
+    metric="views",
+    title="Average Views per Category (US vs GB)",
+    filename="avg_views_by_category.png"
+)
+
+plot_avg_metric_by_category(
+    df_us_videos,
+    df_gb_videos,
+    metric="likes",
+    title="Average Likes per Category (US vs GB)",
+    filename="avg_likes_by_category.png"
+)
