@@ -215,14 +215,27 @@ print("\nTOP 10 CHANNELS BY COMMENTS US")
 top_10_channels_comments_us = df_us_videos.groupby('channel_title')['comment_total'].sum().nlargest(10)
 print(top_10_channels_comments_us,'\n') # Display the top 10 channels by total comments
 
-def combined_top_10_channels(data_us, data_gb, metric, filename):
+# Convert Series to DataFrame for US and GB
+top_10_channels_views_us = top_10_channels_views_us.reset_index().rename(columns={'index': 'channel_title', 'views': 'views'})
+top_10_channels_views_gb = top_10_channels_views_gb.reset_index().rename(columns={'index': 'channel_title', 'views': 'views'})
+
+top_10_channels_likes_us = top_10_channels_likes_us.reset_index().rename(columns={'index': 'channel_title', 'likes': 'likes'})
+top_10_channels_likes_gb = top_10_channels_likes_gb.reset_index().rename(columns={'index': 'channel_title', 'likes': 'likes'})
+
+top_10_channels_dislikes_us = top_10_channels_dislikes_us.reset_index().rename(columns={'index': 'channel_title', 'dislikes': 'dislikes'})
+top_10_channels_dislikes_gb = top_10_channels_dislikes_gb.reset_index().rename(columns={'index': 'channel_title', 'dislikes': 'dislikes'})
+
+top_10_channels_comments_us = top_10_channels_comments_us.reset_index().rename(columns={'index': 'channel_title', 'comment_total': 'comment_total'})
+top_10_channels_comments_gb = top_10_channels_comments_gb.reset_index().rename(columns={'index': 'channel_title', 'comment_total': 'comment_total'})
+
+def combined_top_10_channel(data_us, data_gb, metric, filename):
     # Add a region column to distinguish between US and GB
     data_us['region'] = 'US'
     data_gb['region'] = 'GB'
     
     # Combine the two datasets
-    combined_data = pd.concat([data_us[['title', metric, 'region']], 
-                               data_gb[['title', metric, 'region']]])
+    combined_data = pd.concat([data_us[['channel_title', metric, 'region']], 
+                               data_gb[['channel_title', metric, 'region']]])
     
     # Sort by metric in descending order
     combined_data = combined_data.sort_values(by=metric, ascending=False)
@@ -246,8 +259,7 @@ def combined_top_10_channels(data_us, data_gb, metric, filename):
     plt.savefig(filepath, bbox_inches='tight')
     plt.close()
 
-    combined_top_10_channels(top_10_channels_views_us, top_10_channels_views_gb, 'views', 'combined_top_10_channels_views.png')
-    combined_top_10_channels(top_10_channels_likes_us, top_10_channels_likes_gb, 'likes', 'combined_top_10_channels_likes.png')     
-    combined_top_10_channels(top_10_channels_dislikes_us, top_10_channels_dislikes_gb, 'dislikes', 'combined_top_10_channels_dislikes.png')
-    combined_top_10_channels(top_10_channels_comments_us, top_10_channels_comments_gb, 'comment_total', 'combined_top_10_channels_comments.png')    
-    
+combined_top_10_channel(top_10_channels_views_us, top_10_channels_views_gb, 'views', 'combined_top_10_channels_views.png')
+combined_top_10_channel(top_10_channels_likes_us, top_10_channels_likes_gb, 'likes', 'combined_top_10_channels_likes.png')
+combined_top_10_channel(top_10_channels_dislikes_us, top_10_channels_dislikes_gb, 'dislikes', 'combined_top_10_channels_dislikes.png')
+combined_top_10_channel(top_10_channels_comments_us, top_10_channels_comments_gb, 'comment_total', 'combined_top_10_channels_comments.png')
