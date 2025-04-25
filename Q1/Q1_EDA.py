@@ -265,15 +265,18 @@ combined_top_10_channel(top_10_channels_likes_us, top_10_channels_likes_gb, 'lik
 combined_top_10_channel(top_10_channels_dislikes_us, top_10_channels_dislikes_gb, 'dislikes', 'combined_top_10_channels_dislikes.png')
 combined_top_10_channel(top_10_channels_comments_us, top_10_channels_comments_gb, 'comment_total', 'combined_top_10_channels_comments.png')
 
+total_videos = pd.concat([df_gb_videos, df_us_videos])  
+ 
 # Scatter plot of Likes vs. Views
 plt.figure(figsize=(10, 6))
-plt.scatter(df_gb_videos['views'], df_gb_videos['likes'], alpha=0.5)
+plt.scatter(total_videos['views'], total_videos['likes'], alpha=0.5,color='blue', label='GB Videos')
+#plt.scatter(df_us_videos['views'], df_us_videos['likes'], alpha=0.5, color='red', label='US Videos')
 plt.xscale('log')  # Use logarithmic scale for better visualization
 plt.yscale('log')  # Use logarithmic scale for better visualization
 plt.xlabel('Views')
 plt.ylabel('Likes')
 plt.title('Scatter Plot of Likes vs. Views')
-plt.grid(True, which="both", linestyle='--', linewidth=0.5)
+#plt.grid(True, which="both", linestyle='--', linewidth=0.5)
 plt.tight_layout()
 plt.savefig('Q1/likes_vs_views.png')  # Save the plot as a PNG file
 plt.show()
