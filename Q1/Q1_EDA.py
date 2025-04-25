@@ -72,11 +72,12 @@ plt.savefig(filepath)
 
 #TOP 10 VIDEOS PNGS
 def save_top_10_plot(data,metric,filename):
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(10, 10))
     data_sorted = data.sort_values(by=metric, ascending=True)
     plt.barh(data_sorted['title'].head(10), data_sorted[metric].head(10), color='skyblue')
     plt.xlabel(metric.capitalize())
     plt.title(f'Top 10 Videos by {metric.capitalize()}')
+    plt.xticks(rotation=45, ha='right', fontsize=10)  # Rotate labels and align them to the right
     plt.tight_layout()
     filepath=f'Q1/{filename}'
     plt.savefig(filepath)
